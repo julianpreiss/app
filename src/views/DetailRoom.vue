@@ -80,7 +80,7 @@
               <div class="align-y">
                 <v-icon>mdi-clock-outline</v-icon>
                 <p class="pl-3 pt-1 fw fs-initial"> {{ room.opening }} - {{ room.closing }}</p>
-               </div>
+              </div>
             </div>
             <div
               class="d-flex justify-space-between"
