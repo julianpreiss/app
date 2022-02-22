@@ -27,10 +27,10 @@
           <v-card-title class="order"> {{room.name}}
             <v-btn
               icon
-              
-            ><!--@click="saveFavorite()"-->
+              @click="saveFavorite(room)"
+            >
               <v-icon
-                :color="favorite? '#ff7dd8' : '#b5b5b5'"
+                :color="room.favorite? '#ff7dd8' : '#b5b5b5'"
               >
                 mdi-heart
               </v-icon>
@@ -79,51 +79,57 @@
 </template>
 
 <script>
-import API from "../config.js";
+  import API from "../config.js";
+  import axios from 'axios'
+  
 export default {
   data() {
     return {
       date: this.$route.params?.date,
       district: this.$route.params?.district,
-      favorite: null,
       rooms: [],
       baseUrl: API + '/rooms/district?district=' + this.$route.params?.district
     };
   },
   created() {
     this.getRooms();
-    // this.favorite();
   },
   methods: {
-    /*async checkFavorite () {
-      const params = {
-        roomid: this.roomid,
-        userid: sessionStorage.id
-      }
-      this.baseUrl = API + '/favorites/check'
-      const res = await this.axios.get( this.baseUrl, { params } )
-        console.log(res.data)
-      if (res.data !== null) {
-        this.favorite = true
-        this.favoriteid = res.data._id
+    async checkFavorite () {
+      const favoritesUrl = API + '/favorites/id?id=' + sessionStorage.id
+      const res = await this.axios.get( favoritesUrl )
+      console.log(res.data)
+      if (res.data.length !== 0) {
+        this.favoritesIds = res.data
+        for (const fav of this.favoritesIds) {
+          for (let room in this.rooms) {
+            if(fav.roomid === this.rooms[room]._id) {
+              this.rooms[room].favorite = true
+            }
+          }
+        }
       } else {
         this.favorite = false
         this.favoriteid = null
       }
-    },*/
+    },
     async getRooms() {
       const res = await this.axios.get(this.baseUrl);
       this.rooms = res.data;
+      for (let room in this.rooms) {
+        this.$set(this.rooms[room], 'favorite', false)
+      }
+      this.checkFavorite()
       // console.log(res.data);
     },
     url(idroom){
       console.log (idroom)
       sessionStorage.name ?  this.$router.push({name: 'BookingProcess', params: { id: idroom, date: this.date, district: this.district }}) : this.$router.push({name: 'Login'});
     },
-    /*saveFavorite: function(){
-        if(!this.favorite) {
+      saveFavorite: function(selectedRoom){
+        if(!selectedRoom.favorite) {
           const room = {
-            roomid: this.roomid,
+            roomid: selectedRoom._id,
             userid: sessionStorage.id,
           }
           axios.post(API + '/favorites', room)
@@ -135,14 +141,26 @@ export default {
               console.log({error : error, msg: 'Error al agregar favorito'});
             });
         } else {
-          this.baseUrl = API + '/favorites/id?id=' + this.favoriteid
+        const params = {
+          roomid: selectedRoom._id,
+          userid: sessionStorage.id
+        }
+        const favoritesUrl = API + '/favorites/check'
+        this.axios.get( favoritesUrl, { params } )
+        .then(res => {
+        console.log(res)
+        if (res.data !== null) {
+          const favoriteid = res.data._id         
+          this.baseUrl = API + '/favorites/id?id=' + favoriteid
           axios.delete( this.baseUrl ).then((res) => {
             this.checkFavorite()
+            selectedRoom.favorite = false
             console.log('res', res)
           })
         }
-      }*/
-
+        })
+      }
+    }
   },
 };
 </script>
