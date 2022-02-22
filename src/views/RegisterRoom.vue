@@ -258,6 +258,7 @@
           name: this.name,
           description: this.description,
           address: this.address,
+          district: this.district,
           city: this.city,
           file: this.file,
           price: this.price,
@@ -300,6 +301,7 @@
           if(this.room.name != "" &&
             this.room.description != "" &&
             this.room.address != "" &&
+            this.room.district != "" &&
             this.room.city != "" &&
             this.room.price != "" &&
             this.room.meters != "" &&
@@ -318,7 +320,7 @@
               axios.post('http://localhost:8001/registro/room', this.room)
               .then(data => {
                 console.log(data)
-                this.$router.push('/salas')
+                this.$router.push({name: 'Home'})
               })
               .catch(error => {
                 console.log({error : error, msg: 'Error al registrar la sala'});

@@ -55,7 +55,7 @@
             <v-card-title class="text-subtitle-1 pl-0 pt-3 pb-2">
               <p class="mb-2">
                 <v-icon>mdi-map-marker-outline</v-icon>
-                {{ room.address }}
+                {{ room.address }}, {{ room.district}}.
               </p>
             </v-card-title>
             <div>
@@ -102,7 +102,7 @@
           this.favorite = true
           this.favoritesIds = res.data
           for (const fav of this.favoritesIds) {
-          this.getFavorite(fav.roomid, fav._id)
+            await this.getFavorite(fav.roomid, fav._id)
           }
         } else {
           this.favorite = false

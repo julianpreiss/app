@@ -71,11 +71,6 @@ export default {
     nameSession: '',
     session: false,
   }),
-  computed() {
-    return {
-      nameSession: this.sessionStorage.nameSession,
-    }
-  },
   mounted() {
     if (sessionStorage.name) {
       this.nameSession = sessionStorage.name;
@@ -87,7 +82,6 @@ export default {
     logout(){
         sessionStorage.clear()
         sessionStorage.logout = true;
-        sessionStorage.name = this.nameSession;
         this.$router.push({name: 'Login'})
       }
   }

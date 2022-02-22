@@ -56,19 +56,38 @@
         </v-container>
       </v-form>
     </v-card-text>
+    <v-alert type="error" class="error" v-if="errorRegister">Completa los datos para la búsqueda.</v-alert>
     <v-card-actions 
       class="space action" 
       block
     >
+      <v-slide-x-reverse-transition>
+        <v-tooltip 
+          v-if="formHasErrors" 
+          left
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn  
+              icon
+              class="my-0"
+              color="white" 
+              v-bind="attrs"
+              @click="resetForm"
+              v-on="on"
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </v-slide-x-reverse-transition>
       <v-btn 
         class="btn-call fs-large"
         color="white"
         text 
         block
-        :to="{ name: 'Rooms', params: { district: district, date: date } }"
         @click="saveSearch()"
-      >Buscar</v-btn><!---->
-    </v-card-actions><!--:to="{ name: 'Rooms', params: { id: room._id } }" params: { district: room.district } -->
+      >Buscar</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -87,17 +106,17 @@ export default {
         .toISOString()
         .substr(0, 10),
       rules: {
-          required: value => !!value || 'Campo obligatorio.',
+        required: value => !!value || 'Campo obligatorio.',
       },
       errorMessages: "",
       formHasErrors: false,
       menu: false,
       baseUrl: API + "/districts",
+      errorRegister: false,
     };
   },
   created() {
     this.getDistrict();
-    //this.getRooms()
   },
   watch: {
     zone() {
@@ -109,18 +128,22 @@ export default {
         this.$refs.menu.save(date)
     },
     saveSearch() {
-      axios
-      .get(this.baseUrl + '?district=' + this.district)
-      .then((response) => {
-        this.search = response.data,
-        console.log('get: ' + this.baseUrl + '?district=' + this.district), 
-        console.log('search: ' + this.search)})
-      .catch(e => console.log("e" + e));
+      if( this.district != "" ){
+        axios.get(this.baseUrl + '?district=' + this.district)
+        .then((response) => {
+          this.search = response.data,
+          this.$router.push({ name: 'Rooms', params: { district: this.district, date: this.date } })
+        })
+        .catch(e => 
+          console.log("e" + e));
+          console.log("fecha: " + this.date);
+      }else{
+        this.errorRegister = true;
+      }
     },
     async getDistrict() {
       const res = await this.axios.get(this.baseUrl);
       this.districts = res.data;
-      // console.log(this.districts);
     },
   },
 };

@@ -65,8 +65,7 @@
                   locale="es"
                   min="1950-01-01"
                   color="#EA1F54"
-                  @change="save"
-                >{{ user.date_birth }}</v-date-picker>
+                >{{ user.date_birth }}</v-date-picker><!--@change="save"-->
               </v-menu>
               <v-text-field
                 type="number"

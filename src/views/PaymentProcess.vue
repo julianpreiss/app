@@ -107,7 +107,7 @@
                 color="white" 
                 text
                 block
-                @click="saveUser()"
+                @click="saveBooking()"
               >
                 Aceptar
               </v-btn>
@@ -120,42 +120,70 @@
 </template>
 
 <script>  
+import axios from 'axios'
 import API from '../config.js'
-  export default {
-    data () {
-      return {
-        picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        room: [],
-        id: null,
-        radios: null,
-        payment: {
-          number : null,
-          time: null,
-          fullName: null,
-          expirationDate: null,
-          cvv: null,
-        },
-        formHasErrors: false,
-      }
-    },
-    created(){
-      this.id = this.$route.params.id;
-      this.getOne();
-    },
-    methods:{
-      async getOne(){
-        this.baseUrl = API + '/rooms/id?id=' + this.id
-        const res = await this.axios.get( this.baseUrl ) //Repasar el tallar para ver si podemos cambiar axios por otra conexión
-        this.room = res.data
+
+export default {
+  data () {
+    return {
+      picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      room: [],
+      booking: {
+        user_id: "",
+        name: "",
+        address: "",
+        district: "",
+        date : this.$route.params?.date,
+        time: this.$route.params?.time,
+        img: "",
       },
-      save (date) {
-          this.$refs.menu.save(date)
+      id: null,
+      radios: null,
+      payment: {
+        number : null,
+        time: null,
+        fullName: null,
+        expirationDate: null,
+        cvv: null,
       },
-      saveUser(){
-        this.$router.push('/mis-reservas')
-      }
+      formHasErrors: false,
+      errorRegister: false,
+    }
+  },
+  created(){
+    this.id = this.$route.params.id;
+    this.getOne();
+  },
+  methods:{
+    async getOne(){
+      this.baseUrl = API + '/rooms/id?id=' + this.id
+      const res = await this.axios.get( this.baseUrl ) //Repasar el tallar para ver si podemos cambiar axios por otra conexión
+      this.room = res.data,
+      this.booking.user_id = sessionStorage.id,
+      this.booking.name = this.room.name,
+      this.booking.address = this.room.address,
+      this.booking.district = this.room.district,
+      this.booking.img = this.room.img
+      console.log(this.booking)
+    },
+    saveBooking(){
+      if( this.district != "" ){
+        axios.post(API + "/bookings", this.booking)
+        .then(data=> {
+          console.log(data);
+          this.$router.push({ name: 'DetailBooking', params: { id: this.room._id, date: this.booking.date, time: this.booking.time } })
+        })
+        .catch(error => {
+          this.errorBookings = true;
+          console.log({error : error, msg: 'Error al pagar/registrar la reserva'});
+        }); 
+      }else{
+        this.errorRegister = true;
+        this.$router.push({name: 'Home'})
+      }        
     }
   }
+}
 </script>
 
 <style scoped>

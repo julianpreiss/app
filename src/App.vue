@@ -62,7 +62,7 @@
       color="#EA1F54"
       horizontal
     >
-      <v-btn color="accent-4" :to="'/'">
+      <v-btn color="accent-4" :to="{name: 'Home', params: { sesion: session}}">
         <v-icon large>mdi-home</v-icon>
       </v-btn>
       <v-btn color="accent-4" :to="'/favoritos'">
@@ -101,8 +101,8 @@
     }),
     mounted() {
       if (sessionStorage.name) {
-        this.session = true;
         this.nameSession = sessionStorage.name;
+        this.session = true;
       }
     },
     methods:{
@@ -117,7 +117,6 @@
       logout(){
         sessionStorage.clear()
         sessionStorage.logout = true;
-        sessionStorage.name = this.nameSession;
         this.$router.push({name: 'Login'})
         //this.$forceUpdate(); --Recargar el menú para ver cambios
       }

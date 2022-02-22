@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-alert type="success" v-if="session"><!--v-show="success"-->
-     Has iniciado sesión {{this.nameSession}} {{this.idSession}}!!
+    <v-alert type="success" v-if="session">
+     Has iniciado sesión {{this.nameSession}}!!
     </v-alert>
     <Search />
     <CardsHome />

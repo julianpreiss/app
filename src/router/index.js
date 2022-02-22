@@ -57,6 +57,11 @@ const routes = [
     component: () => import('../views/PaymentProcess.vue')
   },
   {
+    path: '/reserva-confirmada',
+    name: 'DetailBooking',
+    component: () => import('../views/DetailBooking.vue')
+  },
+  {
     path: '/perfil',
     name: 'Profile',
     component: () => import('../views/Profile.vue')

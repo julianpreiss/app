@@ -7,7 +7,7 @@
           text
           color="accent-4"
           @click="reveal = true"
-          :to="'/'"
+          :to="{ name: 'Rooms', params: {date: booking.date, district: district}}"
           >
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
@@ -15,7 +15,7 @@
         <v-card>
           <v-img 
             height="250" 
-            :src="room.img"
+            :src="'http://localhost:8001/api/img/' + room.img"
           />
           <v-card-title> {{room.name}}</v-card-title>
         </v-card>
@@ -72,19 +72,15 @@
                 active-class="action accent-4 white--text"
                 column
               >
-                <v-chip>11:00</v-chip>
-
-                <v-chip>17:00</v-chip>
-
-                <v-chip>20:00</v-chip>
-
-                <v-chip>21:00</v-chip>
+                <v-chip 
+                  v-for="hour in hours" 
+                  :key="hour.id"
+                  :value="hour.name"
+                >
+                  {{hour.name}}
+                </v-chip>
               </v-chip-group>
             </v-card-text>
-            <!--<v-card-text v-if="(booking.date != null)">
-              <p>Cantidad de horas</p>
-
-            </v-card-text>-->
             <v-divider class="mt-2"></v-divider>
             <v-card-actions 
               class="space action" 
@@ -132,10 +128,17 @@ import API from '../config.js'
         picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         room: [],
         id: null,
+        hours:[
+          {id: 0, name:'11:00'},
+          {id: 1, name:'17:00'},
+          {id: 2, name:'20:00'},
+          {id: 3, name:'21:00'},
+        ],
         booking: {
           date : this.$route.params?.date,
           time: null,
         },
+        district: this.$route.params?.district,
         activePicker: null,
         formHasErrors: false,
         baseUrl: API + '/rooms/'
@@ -156,7 +159,6 @@ import API from '../config.js'
       },
       process(){
         this.$router.push({ name: 'PaymentProcess', params: { id: this.room._id, date: this.booking.date, time: this.booking.time } })
-        console.log("id: " + this.room._id + ", date: " + this.booking.date + ", time: " + this.booking.time)
       }
 
     }

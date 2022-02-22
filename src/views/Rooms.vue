@@ -17,15 +17,24 @@
       <v-col class="pt-0" cols="12" sm="6" v-for="room in rooms" :key="room.id">
         <v-card
           class="mx-auto my-3"
-          :to="{ name: 'DetailRoom', params: { id: room._id } }"
         >
-          <v-img 
-            height="250" 
-            :src="'http://localhost:8001/api/img/' + room.img"
-          />
-          <v-card-title class="order">
-            {{ room.name }}
-              <v-icon>mdi-heart</v-icon>
+          <router-link :to="{ name: 'DetailRoom', params: { id: room._id, date: date, district: district }}">
+            <v-img 
+              height="250" 
+              :src="'http://localhost:8001/api/img/' + room.img"
+            />
+          </router-link>
+          <v-card-title class="order"> {{room.name}}
+            <v-btn
+              icon
+              
+            ><!--@click="saveFavorite()"-->
+              <v-icon
+                :color="favorite? '#ff7dd8' : '#b5b5b5'"
+              >
+                mdi-heart
+              </v-icon>
+            </v-btn>
           </v-card-title>
 
           <v-card-text>
@@ -44,7 +53,7 @@
             <v-card-title class="text-subtitle-1 pl-0 pt-3 pb-2">
               <p class="mb-2">
                 <v-icon>mdi-map-marker-outline</v-icon>
-                {{ room.address }}
+                {{ room.address }}, {{ room.district }}.
               </p>
             </v-card-title>
             <div>
@@ -58,7 +67,7 @@
               text
               block
               id="room.id"
-              :to="{ name: 'BookingProcess', params: { id: room._id} }"
+              @click="url(room._id)"
             >
               Reservar
             </v-btn>
@@ -75,6 +84,8 @@ export default {
   data() {
     return {
       date: this.$route.params?.date,
+      district: this.$route.params?.district,
+      favorite: null,
       rooms: [],
       baseUrl: API + '/rooms/district?district=' + this.$route.params?.district
     };
@@ -84,11 +95,53 @@ export default {
     // this.favorite();
   },
   methods: {
+    /*async checkFavorite () {
+      const params = {
+        roomid: this.roomid,
+        userid: sessionStorage.id
+      }
+      this.baseUrl = API + '/favorites/check'
+      const res = await this.axios.get( this.baseUrl, { params } )
+        console.log(res.data)
+      if (res.data !== null) {
+        this.favorite = true
+        this.favoriteid = res.data._id
+      } else {
+        this.favorite = false
+        this.favoriteid = null
+      }
+    },*/
     async getRooms() {
       const res = await this.axios.get(this.baseUrl);
       this.rooms = res.data;
       // console.log(res.data);
     },
+    url(idroom){
+      console.log (idroom)
+      sessionStorage.name ?  this.$router.push({name: 'BookingProcess', params: { id: idroom, date: this.date, district: this.district }}) : this.$router.push({name: 'Login'});
+    },
+    /*saveFavorite: function(){
+        if(!this.favorite) {
+          const room = {
+            roomid: this.roomid,
+            userid: sessionStorage.id,
+          }
+          axios.post(API + '/favorites', room)
+            .then(data => {
+              console.log(data)
+              this.checkFavorite()
+            })
+            .catch(error => {
+              console.log({error : error, msg: 'Error al agregar favorito'});
+            });
+        } else {
+          this.baseUrl = API + '/favorites/id?id=' + this.favoriteid
+          axios.delete( this.baseUrl ).then((res) => {
+            this.checkFavorite()
+            console.log('res', res)
+          })
+        }
+      }*/
 
   },
 };

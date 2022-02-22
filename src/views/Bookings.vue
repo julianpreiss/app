@@ -30,13 +30,13 @@
                 <v-card-subtitle>
                   <p class="mb-2">
                     <v-icon>mdi-map-marker-outline</v-icon>
-                    {{room.address}}
+                    {{room.address}}, {{room.district}}.
                   </p>
                   <p class="price mb-2">
-                    03/12/2021
+                    {{ room.date }}
                   </p>
                   <p class="price mb-2">
-                    21:00
+                    {{ room.time }}
                   </p>
                 </v-card-subtitle>
               </div>
@@ -46,7 +46,7 @@
                 size="140"
                 tile
               >
-                <v-img :src="room.img"></v-img>
+                <v-img :src="'http://localhost:8001/api/img/' + room.img" />
               </v-avatar>
             </div>
             <div>
@@ -81,21 +81,21 @@
   export default {
     data() {
       return {
-        rooms: [
-          { name: 'Domus Artis', address: 'Triunvirato 4321, Villa Urquiza', img: 'https://i.pinimg.com/originals/4e/01/07/4e01070802b337ea8dbb35ca12d51e36.jpg', stars: 0, }
-        ],
-        baseUrl: API + '/rooms', // 'http://localhost:8001/api/rooms' //llamara a la api en un archivo js
+        rooms: [],
+        id: 0,
       };
     },
-   /* created(){
-      this.getRooms();
+  created(){
+      this.id = this.$route.params.id;
+      this.getOne();
     },
     methods:{
-      async getRooms(){
-        const res = await this.axios.get( this.baseUrl ) //Repasar el tallar para ver si podemos cambiar axios por otra conexión
+      async getOne(){
+        this.baseUrl = API + '/bookings/confirmed?user_id=' + sessionStorage.id
+        const res = await this.axios.get( this.baseUrl )
         this.rooms = res.data
-      }
-    }*/
+      },
+    }
   }
 </script>
 

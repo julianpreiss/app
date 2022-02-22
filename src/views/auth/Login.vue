@@ -83,8 +83,8 @@
     mounted(){
       if(sessionStorage.logout){
         this.logout = true;
-        this.$set(this.nameSession, sessionStorage.name);
-        //this.nameSession = sessionStorage.name;
+        //this.$set(this.nameSession, sessionStorage.name);
+        this.nameSession = sessionStorage.name;
         this.idSession = sessionStorage.id;
         sessionStorage.clear();
       }

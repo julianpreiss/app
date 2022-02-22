@@ -2,31 +2,15 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-btn
-          class="back pl-0"
-          text
-          color="accent-4"
-          @click="reveal = true"
-          :to="{ name: 'Rooms', params: { date: date, district: district }}"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <h2 class="my-2 titulos text-center">{{ room.name }}</h2>
+        <h2 class="my-2 titulos text-center">Detalles de su reserva</h2>
+        <v-alert type="success" v-if="confirm">
+              Reserva realizada con éxito !!
+        </v-alert>
         <v-card>
-          <v-img 
-            height="250" 
-            :src="'http://localhost:8001/api/img/' + room.img"
-          />
+          <v-img height="250" :src="'http://localhost:8001/api/img/' + room.img" />
           <v-card-title class="order"> {{room.name}}
-            <v-btn
-              icon
-              @click="saveFavorite()"
-            >
-              <v-icon
-                :color="favorite? '#ff7dd8' : '#b5b5b5'"
-              >
-                mdi-heart
-              </v-icon>
+            <v-btn icon>
+              <v-icon>mdi-heart</v-icon>
             </v-btn>
           </v-card-title>
           <v-card-text class="pb-0">
@@ -48,7 +32,7 @@
             >
               <p class="mb-2">
                 <v-icon>mdi-map-marker-outline</v-icon>
-                {{room.address}}, {{room.district}}.
+                {{room.address}}, {{room.district}}
               </p>
             </v-card-title>
             <div>
@@ -57,14 +41,30 @@
           </v-card-text>
           <v-card-text class="pt-0">
             <div
-              class="d-flex justify-space-between"
+              class="d-flex justify-space-between my-auto"
             >
               <v-card-subtitle
                 class="px-0 py-0"
               >
-                <p class="fs-initial">Precio por 1 hora: </p>
+              <p class="fs-initial">Precio por 1 hora: </p>
+                
               </v-card-subtitle>
-              <p class="price">$ {{ room.price }}</p> 
+              <div class="align-y">
+                <p class="pl-3 pt-1 fw fs-initial">$ {{ room.price }}</p>
+               </div>
+            </div>
+            <div
+              class="d-flex justify-space-between my-auto"
+            >
+              <v-card-subtitle
+                class="px-0 py-0"
+              >
+              <p class="fs-initial">Fecha:</p>
+                
+              </v-card-subtitle>
+              <div class="align-y">
+                <p class="pl-3 pt-1 fw fs-bold"> {{booking.date}}</p>
+               </div>
             </div>
             <div
               class="d-flex justify-space-between my-auto"
@@ -77,8 +77,8 @@
               </v-card-subtitle>
               <div class="align-y">
                 <v-icon>mdi-clock-outline</v-icon>
-                <p class="pl-3 pt-1 fw fs-initial"> {{ room.opening }} - {{ room.closing }}</p>
-              </div>
+                <p class="pl-3 pt-1 fw fs-bold"> {{booking.time}}</p>
+               </div>
             </div>
             <div
               class="d-flex justify-space-between"
@@ -106,9 +106,8 @@
                 color="white" 
                 text 
                 block
-                id="room.id"
-                @click="url(room._id)"
-              >Reservar</v-btn>
+                :to="{ name: 'Bookings', params: { id: room._id, date: booking.date, district: district }}"
+              >Mis Reservas</v-btn>
               </v-card-actions>
         </v-card>
       </v-flex>
@@ -118,74 +117,30 @@
 
 <script>
   import API from '../config.js'
-  import axios from 'axios'
   export default {
     data() {
       return {
-        date: this.$route.params?.date,
         district: this.$route.params?.district,
-        favorite: false,
-        favoriteid: null,
-        room: {
-          img: null,
+        room: [],
+        booking: {
+          date : this.$route.params?.date,
+          time: this.$route.params?.time,
         },
-        roomid: null,
+        id: 0,
+        confirm: false,
       };
     },
     created(){
-      this.roomid = this.$route.params.id;
-      this.getOne()
+      this.id = this.$route.params.id;
+      this.getOne();
     },
     methods:{
-      async checkFavorite () {
-        const params = {
-          roomid: this.roomid,
-          userid: sessionStorage.id
-        }
-        this.baseUrl = API + '/favorites/check'
-        const res = await this.axios.get( this.baseUrl, { params } )
-          console.log(res.data)
-        if (res.data !== null) {
-          this.favorite = true
-          this.favoriteid = res.data._id
-        } else {
-          this.favorite = false
-          this.favoriteid = null
-        }
-      },
       async getOne(){
-        this.baseUrl = API + '/rooms/id?id=' + this.roomid
-        const res = await this.axios.get( this.baseUrl )
+        this.baseUrl = API + '/rooms/id?id=' + this.id
+        const res = await this.axios.get( this.baseUrl ) //Repasar el tallar para ver si podemos cambiar axios por otra conexión
         this.room = res.data
-
-        this.checkFavorite()
+        this.confirm = true;
       },
-      url(idroom){
-        console.log (idroom)
-        sessionStorage.name ?  this.$router.push({name: 'BookingProcess', params: { id: idroom, date: this.date, district: this.district }}) : this.$router.push({name: 'Login'});
-      },
-      saveFavorite: function(){
-        if(!this.favorite) {
-          const room = {
-            roomid: this.roomid,
-            userid: sessionStorage.id,
-          }
-          axios.post(API + '/favorites', room)
-            .then(data => {
-              console.log(data)
-              this.checkFavorite()
-            })
-            .catch(error => {
-              console.log({error : error, msg: 'Error al agregar favorito'});
-            });
-        } else {
-          this.baseUrl = API + '/favorites/id?id=' + this.favoriteid
-          axios.delete( this.baseUrl ).then((res) => {
-            this.checkFavorite()
-            console.log('res', res)
-          })
-        }
-      }
     }
   }
 </script>
@@ -223,5 +178,10 @@
 }
 .fs-initial{
   font-size: initial;
+}
+.f-bold{
+  font-size: large !important;
+  color: black !important;
+  font-weight: bold !important;
 }
 </style>
