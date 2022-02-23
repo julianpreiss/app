@@ -79,9 +79,9 @@
 </template>
 
 <script>
-  import API from "../config.js";
-  import axios from 'axios'
-  
+import API from "../config.js";
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -98,7 +98,6 @@ export default {
     async checkFavorite () {
       const favoritesUrl = API + '/favorites/id?id=' + sessionStorage.id
       const res = await this.axios.get( favoritesUrl )
-      console.log(res.data)
       if (res.data.length !== 0) {
         this.favoritesIds = res.data
         for (const fav of this.favoritesIds) {
@@ -120,27 +119,25 @@ export default {
         this.$set(this.rooms[room], 'favorite', false)
       }
       this.checkFavorite()
-      // console.log(res.data);
     },
     url(idroom){
-      console.log (idroom)
       sessionStorage.name ?  this.$router.push({name: 'BookingProcess', params: { id: idroom, date: this.date, district: this.district }}) : this.$router.push({name: 'Login'});
     },
-      saveFavorite: function(selectedRoom){
-        if(!selectedRoom.favorite) {
-          const room = {
-            roomid: selectedRoom._id,
-            userid: sessionStorage.id,
-          }
-          axios.post(API + '/favorites', room)
-            .then(data => {
-              console.log(data)
-              this.checkFavorite()
-            })
-            .catch(error => {
-              console.log({error : error, msg: 'Error al agregar favorito'});
-            });
-        } else {
+    saveFavorite: function(selectedRoom){
+      if(!selectedRoom.favorite) {
+        const room = {
+          roomid: selectedRoom._id,
+          userid: sessionStorage.id,
+        }
+        axios.post(API + '/favorites', room)
+          .then(data => {
+            console.log(data)
+            this.checkFavorite()
+          })
+          .catch(error => {
+            console.log({error : error, msg: 'Error al agregar favorito'});
+          });
+      } else {
         const params = {
           roomid: selectedRoom._id,
           userid: sessionStorage.id
@@ -148,16 +145,15 @@ export default {
         const favoritesUrl = API + '/favorites/check'
         this.axios.get( favoritesUrl, { params } )
         .then(res => {
-        console.log(res)
-        if (res.data !== null) {
-          const favoriteid = res.data._id         
-          this.baseUrl = API + '/favorites/id?id=' + favoriteid
-          axios.delete( this.baseUrl ).then((res) => {
-            this.checkFavorite()
-            selectedRoom.favorite = false
-            console.log('res', res)
-          })
-        }
+          if (res.data !== null) {
+            const favoriteid = res.data._id         
+            this.baseUrl = API + '/favorites/id?id=' + favoriteid
+            axios.delete( this.baseUrl ).then((res) => {
+              this.checkFavorite()
+              selectedRoom.favorite = false
+              console.log('res', res)
+            })
+          }
         })
       }
     }
