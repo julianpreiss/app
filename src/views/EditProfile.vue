@@ -149,10 +149,7 @@ export default {
     };
   },
   created() {
-    //No está llegando el ID, si lo pongo a mano
-    //me trae los datos correctamente
     this.id = sessionStorage.id;
-    console.log(this.id);
     this.getUser();
   },
   methods: {
@@ -160,7 +157,6 @@ export default {
       this.baseUrl = API + '/users/id?id=' + this.id
       const res = await this.axios.get(this.baseUrl);
       this.user = res.data;
-      console.log("Hola" + this.user);
     },
     editUser() {
       const formData = {

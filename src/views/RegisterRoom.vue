@@ -216,7 +216,7 @@
           name: "",
           description: "",
           address: "",
-          district:"",
+          district: "",
           city: "",
           type: "",
           file: null,
@@ -275,7 +275,6 @@
 
     methods: {
       addressCheck () {
-       /* Revisar esto */
         this.errorMessages = this.room.address && !this.room.name
           ? `Campo obligatorio`
           : ''
@@ -289,13 +288,11 @@
         })
       },
       onFileSelected(event){
-        console.log(event)
         this.file = event
       },
       async getDistrict() {
         const res = await this.axios.get(this.baseUrl);
         this.districts = res.data;
-        console.log(this.districts);
       },
       saveRoom () {
           if(this.room.name != "" &&
@@ -317,7 +314,7 @@
                   console.log(res)
               });
 
-              axios.post('http://localhost:8001/registro/room', this.room)
+              axios.post('http://localhost:8001/api/rooms', this.room)
               .then(data => {
                 console.log(data)
                 this.$router.push({name: 'Home'})

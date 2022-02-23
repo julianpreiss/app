@@ -83,10 +83,10 @@
             <div
               class="d-flex justify-space-between"
             >
-              <span>
+              <!--<span>
                 <v-icon>mdi-account-multiple-plus-outline</v-icon> 
                 Max: {{ room.max_people }}
-              </span>
+              </span>-->
               <span>
                 <v-icon>mdi-texture-box</v-icon> 
                 {{ room.meters }} m2

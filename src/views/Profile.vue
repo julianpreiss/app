@@ -75,7 +75,6 @@ export default {
     if (sessionStorage.name) {
       this.nameSession = sessionStorage.name;
       this.session =  true;
-      console.log(this.nameSession);
     }
   },
   methods:{

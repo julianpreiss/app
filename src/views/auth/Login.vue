@@ -37,7 +37,7 @@
                   label="Contraseña"
                   counter
                   @click:append="show1 = !show1"
-                ></v-text-field> <!-- :rules="[() => !!email || 'Este campo es obligatorio']" , :rules="[() => !!password || 'Este campo es obligatorio']" -->
+                ></v-text-field>
               </v-card-text>
               <v-card-actions
                 class="space action" 

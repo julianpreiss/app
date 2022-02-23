@@ -83,10 +83,10 @@
             <div
               class="d-flex justify-space-between"
             >
-              <span>
+              <!--<span>
                 <v-icon>mdi-account-multiple-plus-outline</v-icon> 
                 Max: {{ room.max_people }}
-              </span>
+              </span>-->
               <span>
                 <v-icon>mdi-texture-box</v-icon> 
                 {{ room.meters }} m2
@@ -144,7 +144,6 @@
         }
         this.baseUrl = API + '/favorites/check'
         const res = await this.axios.get( this.baseUrl, { params } )
-          console.log(res.data)
         if (res.data !== null) {
           this.favorite = true
           this.favoriteid = res.data._id
@@ -161,7 +160,6 @@
         this.checkFavorite()
       },
       url(idroom){
-        console.log (idroom)
         sessionStorage.name ?  this.$router.push({name: 'BookingProcess', params: { id: idroom, date: this.date, district: this.district }}) : this.$router.push({name: 'Login'});
       },
       saveFavorite: function(){

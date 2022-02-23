@@ -205,19 +205,16 @@ data() {
           this.user.email != "" &&
           this.user.user_name != "" && 
           this.user.password != ""){
-        console.log('dentro del name: ' + this.user.name)
         axios.post(this.baseUrl + "/register", this.user)
         .then(data => {
           console.log(data);
-          this.$router.push('/iniciar-sesion')
+          this.$router.push({name: 'Login'})
         })
         .catch(error => {
           this.errorRegister = true;
           console.log({error : error, msg: 'Error al registrar usuario'});
-          console.log('dio error');
         });
       }else{
-        console.log('errorRegister else' + this.errorRegister)
         this.errorRegister = true;
       }
     },

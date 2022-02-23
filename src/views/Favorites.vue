@@ -17,7 +17,6 @@
         v-for="room in rooms"
         :key="room.id"
       >
-        
         <v-card
           class="mx-auto my-3"
         >
@@ -64,9 +63,9 @@
           </v-card-text>
           <v-card-actions class="space action" block>
             <v-btn
-              class="btn-call"
+              class="btn-call fs-large"
               color="white"
-              text
+              text 
               block
               id="room.id"
               :to="{ name: 'BookingProcess', params: { id: room._id} }"
@@ -111,10 +110,8 @@
       },
       async getFavorite(id, idFav){
         const res = await this.axios.get( this.baseUrl + id )
-        console.log(this.rooms)
         res.data.idFav = idFav
         this.rooms.push(res.data)
-        console.log(this.rooms)
       },
       deleteFavorite (id) {
         const url = API + '/favorites/id?id=' + id

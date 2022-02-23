@@ -136,7 +136,6 @@ export default {
         })
         .catch(e => 
           console.log("e" + e));
-          console.log("fecha: " + this.date);
       }else{
         this.errorRegister = true;
       }

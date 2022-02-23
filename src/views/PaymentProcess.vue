@@ -164,7 +164,6 @@ export default {
       this.booking.address = this.room.address,
       this.booking.district = this.room.district,
       this.booking.img = this.room.img
-      console.log(this.booking)
     },
     saveBooking(){
       if( this.district != "" ){
