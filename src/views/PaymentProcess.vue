@@ -166,6 +166,13 @@ export default {
       this.booking.img = this.room.img
     },
     saveBooking(){
+      const startDate = `${this.booking.date}T${this.booking.time}:00-03:00`
+      const hourArray = this.booking.time.split("")
+      hourArray[1] = parseInt(hourArray[1]) + 2
+      const endHour = hourArray.join('')
+      const endDate = `${this.booking.date}T${endHour}:00-03:00`
+      this.booking.startDate = startDate
+      this.booking.endDate = endDate
       if( this.district != "" ){
         axios.post(API + "/bookings", this.booking)
         .then(data=> {
