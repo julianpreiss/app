@@ -309,12 +309,12 @@
               const formData = new FormData();
               formData.append('file', this.file, this.room.img);
 
-              axios.post('http://localhost:8001/upload', formData)
+              axios.post('https://usala-api.herokuapp.com/upload', formData)
                 .then(res =>{
                   console.log(res)
               });
 
-              axios.post('http://localhost:8001/api/rooms', this.room)
+              axios.post('https://usala-api.herokuapp.com/api/rooms', this.room)
               .then(data => {
                 console.log(data)
                 this.$router.push({name: 'Home'})

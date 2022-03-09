@@ -21,7 +21,7 @@
           <router-link :to="{ name: 'DetailRoom', params: { id: room._id, date: date, district: district }}">
             <v-img 
               height="250" 
-              :src="'http://localhost:8001/api/img/' + room.img"
+              :src="'https://usala-api.herokuapp.com/api/img/' + room.img"
             />
           </router-link>
           <v-card-title class="order"> {{room.name}}

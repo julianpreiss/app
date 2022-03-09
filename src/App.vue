@@ -88,7 +88,6 @@
         { title: 'Favoritos', icon: 'mdi-heart', path: '/favoritos' },
         { title: 'Mis Reservas', icon: 'mdi-calendar', path: '/mis-reservas' },
         { title: 'Mi Perfil', icon: 'mdi-account', path: '/perfil' },
-        { title: 'Splash', icon: 'mdi-account-plus', path: '/splash' },
       ],
       drawer: null, 
       selectedItem: 0,

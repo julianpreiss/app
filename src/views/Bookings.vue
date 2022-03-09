@@ -49,7 +49,7 @@
               size="140"
               tile
             >
-              <v-img :src="'http://localhost:8001/api/img/' + room.img" />
+              <v-img :src="'https://usala-api.herokuapp.com/api/img/' + room.img" />
             </v-avatar>
           </div>
           <div>

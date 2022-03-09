@@ -96,7 +96,7 @@
           "password" : this.password,
         }
         
-        axios.post('http://localhost:8001/api/login', dataLogin)
+        axios.post('https://usala-api.herokuapp.com/api/login', dataLogin)
           .then( data =>{
             if(data.data.status == "ok"){
               sessionStorage.token = data.data.token
