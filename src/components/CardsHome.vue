@@ -30,8 +30,8 @@
     data: () => ({
       cards: [
         { title: 'Encontrá tu sala más cercana', src: 'https://cdn.pixabay.com/photo/2016/11/22/19/15/hand-1850120_960_720.jpg', flex: 12 },
-        { title: 'Estudios de grabación', src: 'https://cdn.pixabay.com/photo/2016/11/22/19/15/hand-1850120_960_720.jpg', flex: 12 },
-        { title: 'Salas de ensayo', src: 'https://cdn.pixabay.com/photo/2016/11/22/19/15/hand-1850120_960_720.jpg', flex: 12 },
+        { title: 'Estudios de grabación', src: 'https://cdn.pixabay.com/photo/2017/11/02/20/31/guitars-2912447_960_720.jpg', flex: 12 },
+        { title: 'Salas de ensayo', src: 'https://cdn.pixabay.com/photo/2016/03/28/09/36/music-1285165_960_720.jpg', flex: 12 },
       ],
     }),
   }
