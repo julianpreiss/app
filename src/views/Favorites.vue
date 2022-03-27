@@ -48,7 +48,7 @@
                 readonly
                 size="14"
               ></v-rating>
-              <p class="grey--text ms-4">{{ room.stars }} (413)</p>
+              <p class="grey--text ms-4">{{ room.stars }}</p>
               <p class="price">$ {{ room.price }}</p>
             </v-row>
             <v-card-title class="text-subtitle-1 pl-0 pt-3 pb-2">

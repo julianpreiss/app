@@ -220,6 +220,7 @@
           city: "",
           type: "",
           file: null,
+          user_id: sessionStorage.id,
           price: "",
           meters: "",
           opening: "",
