@@ -15,7 +15,7 @@
         <v-card>
           <v-img 
             height="250" 
-            :src="'http://localhost:8001/api/img/' + room.img"
+            :src="'https://usala-api.herokuapp.com/api/img/' + room.img"
           />
           <v-card-title> {{room.name}}</v-card-title>
         </v-card>

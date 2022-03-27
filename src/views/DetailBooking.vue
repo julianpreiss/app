@@ -7,7 +7,7 @@
               Reserva realizada con éxito !!
         </v-alert>
         <v-card>
-          <v-img height="250" :src="'http://localhost:8001/api/img/' + room.img" />
+          <v-img height="250" :src="'https://usala-api.herokuapp.com/api/img/' + room.img" />
           <v-card-title class="order"> {{room.name}}
             <v-btn icon>
               <v-icon>mdi-heart</v-icon>
